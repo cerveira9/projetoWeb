@@ -1,0 +1,8 @@
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/tx/Transacional.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/dao/DAO.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/dao/UsuarioDao.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/util/Autorizador.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/bean/LoginBean.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/conexao/JPAUtil.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/modelo/negocio/Usuario.java
+/Users/rogeriojesussilva/Documents/workspace/projeto-web/src/main/java/br/com/fsma/projeto_web/tx/GerenciadorDeTransacao.java

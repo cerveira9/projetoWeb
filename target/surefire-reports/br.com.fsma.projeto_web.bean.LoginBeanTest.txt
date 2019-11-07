@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: br.com.fsma.projeto_web.bean.LoginBeanTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE! - in br.com.fsma.projeto_web.bean.LoginBeanTest
+testLoga(br.com.fsma.projeto_web.bean.LoginBeanTest)  Time elapsed: 0.002 sec  <<< ERROR!
+java.lang.ExceptionInInitializerError
+Caused by: java.lang.IllegalStateException: WELD-ENV-000016: Missing beans.xml file in META-INF
+
+testDesloga(br.com.fsma.projeto_web.bean.LoginBeanTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class br.com.fsma.projeto_web.bean.WeldContext
+
