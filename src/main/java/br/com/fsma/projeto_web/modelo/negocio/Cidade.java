@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,7 +27,7 @@ public class Cidade implements Serializable{
 	@Column(name = "nome", nullable = false, length = 20)
 	private String nome;
 	@JoinColumn(name = "uf_fk")
-	@OneToOne
+	@ManyToOne
 	private Uf uf;
 	
 	public Cidade() {}
@@ -50,7 +50,7 @@ public class Cidade implements Serializable{
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nome = nome.toUpperCase();
 	}
 
 	public Uf getUf() {
@@ -85,7 +85,7 @@ public class Cidade implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Cidade [nome = " + nome + "]";
+		return nome;
 	}
 	
 	

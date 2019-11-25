@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Projeto Web - Empresas</title>
+	<link type="text/css" rel="stylesheet"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css" />
+</h:head>
+
+<h:body>
+
+	<h:form id="frmBusca">
+
+		<p:panel header="Busca de Empresas" rendered="#{empresaBean.listando}">
+			<p:spacer />
+			<h:panelGroup>
+				<p:outputLabel value="Uf:" style="margin-left: 15px;" />
+				<p:selectOneMenu value="#{empresaBean.ufIdFiltro}">
+					<f:selectItem itemValue="#{null}" itemLabel="" />
+					<f:selectItems value="#{empresaBean.listaUfs()}" var="uf"
+						itemValue="#{uf.id}" itemLabel="#{uf.sigla}" />
+					<p:ajax event="change" update=":frmBusca:cidade :frmBusca:bairro" listener="#{empresaBean.atualizaUf()}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Cidade:" style="margin-left: 15px;" />
+				<p:selectOneMenu id="cidade" value="#{empresaBean.cidadeIdFiltro}" style="width: 250px;">
+					<f:selectItem itemValue="#{null}" itemLabel="" />
+					<f:selectItems value="#{empresaBean.listaCidades()}" var="cidade"
+						itemValue="#{cidade.id}" itemLabel="#{cidade.nome}" />
+					<p:ajax event="change" update=":frmBusca:bairro" listener="#{empresaBean.atualizaCidade()}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Bairro:" />
+				<p:selectOneMenu id="bairro" value="#{empresaBean.bairroIdFiltro}" style="width: 350px;">
+					<f:selectItem itemValue="#{null}" itemLabel="" />
+					<f:selectItems value="#{empresaBean.listaBairros()}" var="bairro"
+						itemValue="#{bairro.id}" itemLabel="#{bairro.nome}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel style="margin-left: 15px;">CNPJ:</p:outputLabel>
+				<p:inputText id="nome" label="CNPJ"
+					value="#{empresaBean.filtro.cnpj}">
+				</p:inputText>
+				
+				<p:commandButton value="Buscar" id="nonAjax"
+					style="margin-right:20px;" ajax="false"
+					actionListener="#{empresaBean.buscaEmpresa()}" />
+				<p:commandButton value="Incluir"
+					actionListener="#{empresaBean.solicitaIncluir()}" update="@all"
+					process="@form" />
+			</h:panelGroup>
+		</p:panel>
+
+	</h:form>
+
+	<h:form id="frmListaEmpresa">
+
+		<p:panel header="Empresas" rendered="#{empresaBean.listando}">
+			<p:dataTable var="e" value="#{empresaBean.empresas}">
+				<p:column headerText="Razão Social">
+					<h:outputText value="#{e.razaoSocial}" />
+				</p:column>
+
+				<p:column headerText="Logradouro">
+					<h:outputText value="#{e.logradouro}" />
+				</p:column>
+
+				<p:column headerText="CEP">
+					<h:outputText value="#{e.cep}" />
+				</p:column>
+
+				<p:column headerText="CNPJ">
+					<h:outputText value="#{e.cnpj}" />
+				</p:column>
+
+				<p:column headerText="Data da Última Fiscalização">
+					<h:outputText value="#{e.dataUltimaFiscalizacao}"
+						converter="localDateFacesConverter" />
+				</p:column>
+
+				<p:column headerText="Ação">
+					<p:commandButton value="Excluir" ajax="false" update="@all"
+						process="@this"
+						actionListener="#{empresaBean.confirmaExclusao(e.id)}" />
+					<p:commandButton value="Alterar" ajax="false" process="@this"
+						update="@all"
+						actionListener="#{empresaBean.solicitaAlterar(e.id)}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+	</h:form>
+
+	<h:form id="frmCadastro">
+
+		<p:messages autoUpdate="true" showDetail="true" />
+		<p:panel header="Cadastro de Empresa" style="width: 30%;"
+			rendered="#{empresaBean.editando}">
+			<h:panelGrid columns="2" style="width: 100%;">
+				<p:outputLabel value="Uf:" />
+				<p:selectOneMenu value="#{empresaBean.idUfSelecionada}">
+					<f:selectItems value="#{empresaBean.listaUfs()}" var="uf"
+						itemValue="#{uf.id}" itemLabel="#{uf.nome}" />
+					<p:ajax event="change" update=":frmCadastro:cidade" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Cidade:" />
+				<p:selectOneMenu id="cidade"
+					value="#{empresaBean.idCidadeSelecionada}">
+					<f:selectItems value="#{empresaBean.listaCidadesParaOCadastro()}"
+						var="cidade" itemValue="#{cidade.id}" itemLabel="#{cidade.nome}" />
+					<p:ajax event="change" update=":frmCadastro:bairro" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Bairro:" />
+				<p:selectOneMenu id="bairro"
+					value="#{empresaBean.idBairroSelecionado}">
+					<f:selectItems value="#{empresaBean.listaBairrosParaOCadastro()}"
+						var="bairro" itemValue="#{bairro.id}" itemLabel="#{bairro.nome}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Razão Social:" for="razaoSocial" />
+				<p:inputText id="razaoSocial"
+					value="#{empresaBean.empresa.razaoSocial}" style="width: 100%;" />
+
+				<p:outputLabel value="Logradouro:" for="logradouro" />
+				<p:inputText id="logradouro"
+					value="#{empresaBean.empresa.logradouro}" style="width: 100%;" />
+
+				<p:outputLabel value="CEP:" for="cep" />
+				<p:inputMask mask="99999-999" id="cep"
+					value="#{empresaBean.empresa.cep}" style="width: 100%;" />
+
+				<p:outputLabel value="CNPJ:" for="cnpj" />
+				<p:inputMask mask="99.999.999/9999-99" id="cnpj"
+					value="#{empresaBean.empresa.cnpj}" style="width: 100%;" />
+
+				<p:outputLabel for="dataUltimaFiscalizacao"
+					value="Data da Última Fiscalização:" />
+				<p:calendar id="dataUltimaFiscalizacao"
+					value="#{empresaBean.empresa.dataUltimaFiscalizacao}"
+					pattern="dd/MM/yyyy" mask="true"
+					converter="localDateFacesConverter" />
+
+				<p:spacer />
+				<h:panelGroup rendered="#{empresaBean.incluindo}">
+					<p:commandButton value="Cadastrar" process="@form" update="@all"
+						actionListener="#{empresaBean.confirmaInclusao()}" />
+					<p:commandButton value="Cancelar" process="@form" update="@all"
+						actionListener="#{empresaBean.cancelarInclusao()}" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{empresaBean.alterando}">
+					<p:commandButton value="Alterar" process="@form" update="@all"
+						actionListener="#{empresaBean.confirmaAlteracao()}" />
+					<p:commandButton value="Cancelar" process="@form" update="@all"
+						actionListener="#{empresaBean.cancelarAlteracao()}" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+</h:body>
+
+</html>

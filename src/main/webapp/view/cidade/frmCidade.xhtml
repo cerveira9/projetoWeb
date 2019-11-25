@@ -12,27 +12,34 @@
 
 <h:body>
 
-	<h:form>
-		<p:panel header="Busca de Cidades" footer="">
+	<h:form id="frmBusca">
+
+		<p:panel header="Busca de Cidades" rendered="#{cidadeBean.listando}">
 			<p:outputLabel>Nome:</p:outputLabel>
 			<p:spacer />
 			<h:panelGroup>
-				<p:inputText id="nome" required="true" label="Nome">
-					<f:validateLength minimum="2" />
+				<p:inputText id="nome" label="Nome"
+					value="#{cidadeBean.filtro.nomeCidade}">
 				</p:inputText>
+				<p:outputLabel value="Uf:" style="margin-left: 15px;" />
+				<p:selectOneMenu value="#{cidadeBean.filtro.ufId}">
+					<f:selectItems value="#{cidadeBean.listaUfs()}" var="uf"
+						itemValue="#{uf.id}" itemLabel="#{uf.nome}" />
+				</p:selectOneMenu>
 				<p:commandButton value="Buscar" id="nonAjax"
-					style="margin-right:20px;" ajax="false" />
-				<p:commandButton value="Cadastro" action="#{cidadeBean.novaCidade}" />
+					style="margin-right:20px;" ajax="false"
+					actionListener="#{cidadeBean.buscaCidade()}" />
+				<p:commandButton value="Incluir"
+					actionListener="#{cidadeBean.solicitaIncluir()}" update="@all"
+					process="@form" />
 			</h:panelGroup>
-
 		</p:panel>
+
 	</h:form>
 
 	<h:form id="frmListaCidade">
 
-		<p:panel header="Cidades">
-			<p:commandButton value="Retornar a Busca"
-				action="#{cidadeBean.novaCidade}" />
+		<p:panel header="Cidades" rendered="#{cidadeBean.listando}">
 			<p:dataTable var="c" value="#{cidadeBean.cidades}">
 				<p:column headerText="Nome">
 					<h:outputText value="#{c.nome}" />
@@ -43,48 +50,50 @@
 				</p:column>
 
 				<p:column headerText="Ação">
-					<p:commandButton value="Excluir" ajax="false" process="@this"
-						update="@all" />
+					<p:commandButton value="Excluir" ajax="false" update="@all"
+						process="@this"
+						actionListener="#{cidadeBean.confirmaExclusao(c.id)}"/>
 					<p:commandButton value="Alterar" ajax="false" process="@this"
-						update="@all" />
+						update="@all" actionListener="#{cidadeBean.solicitaAlterar(c.id)}" />
 				</p:column>
 			</p:dataTable>
+			
 		</p:panel>
+
 	</h:form>
 
 	<h:form id="frmCadastro">
+
 		<p:messages autoUpdate="true" showDetail="true" />
-		<p:panel header="Cadastro de Cidade"
-			style="width: 30%;">
+		<p:panel header="Cadastro de Cidade" style="width: 30%;"
+			rendered="#{cidadeBean.editando}">
 			<h:panelGrid columns="2" style="width: 100%;">
 				<p:outputLabel value="Nome da Cidade:" for="nome" />
-				<p:inputText id="nome" value="#{ufBean.uf.nome}"
+				<p:inputText id="nome" value="#{cidadeBean.cidade.nome}"
 					style="width: 100%;" />
 
-				<p:outputLabel value="Uf:"  />
-				<p:selectOneMenu id="console" value="#{selectOneMenuView.console}"
-					style="width:125px">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
-					<f:selectItem itemLabel="PS4" itemValue="PS4" />
-					<f:selectItem itemLabel="Wii U" itemValue="Wii U" />
-				</p:selectOneMenu>
+				<p:outputLabel value="Uf:" />
+				<h:selectOneMenu value="#{cidadeBean.idUfSelecionada}">
+					<f:selectItems value="#{cidadeBean.listaUfs()}" var="uf"
+						itemValue="#{uf.id}" itemLabel="#{uf.nome}" />
+				</h:selectOneMenu>
 
 				<p:spacer />
-				<h:panelGroup >
+				<h:panelGroup rendered="#{cidadeBean.incluindo}">
 					<p:commandButton value="Cadastrar" process="@form" update="@all"
-						actionListener="#{ufBean.confirmaInclusao()}" />
+						actionListener="#{cidadeBean.confirmaInclusao()}" />
 					<p:commandButton value="Cancelar" process="@form" update="@all"
-						actionListener="#{ufBean.cancelarInclusao()}" />
+						actionListener="#{cidadeBean.cancelarInclusao()}" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{ufBean.alterando}">
+				<h:panelGroup rendered="#{cidadeBean.alterando}">
 					<p:commandButton value="Alterar" process="@form" update="@all"
-						actionListener="#{ufBean.confirmaAlteracao()}" />
+						actionListener="#{cidadeBean.confirmaAlteracao()}" />
 					<p:commandButton value="Cancelar" process="@form" update="@all"
-						actionListener="#{ufBean.cancelarAlteracao()}" />
+						actionListener="#{cidadeBean.cancelarAlteracao()}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</p:panel>
+
 	</h:form>
 </h:body>
 

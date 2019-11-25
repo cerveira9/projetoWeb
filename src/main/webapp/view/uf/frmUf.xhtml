@@ -13,6 +13,7 @@
 <h:body>
 
 	<h:form id="frmLista">
+	<p:growl id="message" showDetail="true" />
 		<p:panel rendered="#{ufBean.listando}"
 			header="Lista de Unidades Federativas">
 			<p:commandButton value="Incluir" action="#{ufBean.solicitaIncluir()}"
@@ -28,11 +29,14 @@
 				</p:column>
 
 				<p:column headerText="Ação">
-					<p:commandButton value="Excluir" actionListener="#{ufBean.confirmaExclusao(uf.id)}" ajax="false" process="@this" update="@all" />
+					<p:commandButton value="Excluir" actionListener="#{ufBean.confirmaExclusao(uf.id)}" ajax="false" process="@this" update="@all">
+						
+					</p:commandButton>
 					<p:commandButton value="Alterar" actionListener="#{ufBean.solicitaAlterar(uf.id)}" ajax="false" process="@this" update="@all" />
 				</p:column>
 			</p:dataTable>
 		</p:panel>
+		
 	</h:form>
 
 	<h:form id="frmCadastro">

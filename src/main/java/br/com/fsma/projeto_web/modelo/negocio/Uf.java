@@ -74,7 +74,7 @@ public class Uf implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Uf [sigla=" + sigla + "]";
+		return sigla;
 	}
 	
 	

@@ -74,7 +74,18 @@ public class UfDao implements Serializable{
 	public Uf buscaPorSigla(String sigla) {
 		String jpql = " select u from Uf u where u.sigla = :pSigla";
 		TypedQuery<Uf> query = em.createQuery(jpql, Uf.class);
-		query.setParameter("pSigla", sigla.trim().toLowerCase());
+		query.setParameter("pSigla", sigla);
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		}
+	}
+
+	public Uf buscaPorNome(String nome) {
+		String jpql = " select u from Uf u where u.nome = :pNome";
+		TypedQuery<Uf> query = em.createQuery(jpql, Uf.class);
+		query.setParameter("pNome", nome);
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException ex) {

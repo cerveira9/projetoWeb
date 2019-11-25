@@ -42,7 +42,6 @@ public class UfBean implements Serializable{
 	public boolean isEditando() {
 		return  (status == Status.INCLUINDO) || (status == Status.ALTERANDO);
 	}
-	
 
 	public boolean isAlterando() {
 		return status == Status.ALTERANDO;
@@ -109,8 +108,9 @@ public class UfBean implements Serializable{
 	public void confirmaExclusao(Long ufId) {
 		uf = ufDao.buscaPorId(ufId);
 		ufDao.remove(uf);
-		uf = null;
-		ufs = ufDao.buscaTodasUfs();
+		ufs.remove(uf);
+//		uf = null;
+//		ufs = ufDao.buscaTodasUfs();
 		status = Status.LISTANDO;
 	}
 	

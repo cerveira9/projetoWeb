@@ -6,6 +6,7 @@ import javax.inject.Named;
 
 import br.com.fsma.projeto_web.modelo.dao.UfDao;
 import br.com.fsma.projeto_web.modelo.negocio.Uf;
+import static br.com.fsma.projeto_web.util.StringUtil.*;
 
 @Named
 @RequestScoped
@@ -17,12 +18,12 @@ public class UfValidador {
 	
 	public boolean naoPodeIncluir(Uf uf) {
 
-		if (uf.getSigla().length() != 2) {
+		if (uf.getSigla().length() < 2) {
 			mensagem = "Sigla com menos de 2 caracteres.";
 			return true;
 		}
 		
-		if (uf.getNome() == null || uf.getNome().length() == 0) {
+		if (isEmpty(uf.getNome())) {
 			mensagem = "Nome não informado.";
 			return true;
 		}
@@ -30,7 +31,14 @@ public class UfValidador {
 		Uf sigla = ufDao.buscaPorSigla(uf.getSigla());
 		
 		if (sigla != null) {
-			mensagem = "Essa uf já foi cadastrada anteriormente.";
+			mensagem = "Essa sigla já foi cadastrada anteriormente.";
+			return true;
+		}
+		
+		Uf nome = ufDao.buscaPorNome(uf.getNome());
+		
+		if (nome != null) {
+			mensagem = "Esse nome já foi cadastrado anteriormente.";
 			return true;
 		}
 
@@ -45,17 +53,17 @@ public class UfValidador {
 			return true;
 		}
 		
-		if (uf.getNome() == null || uf.getNome().length() == 0) {
+		if (isEmpty(uf.getNome())) {
 			mensagem = "Nome não informado.";
 			return true;
 		}
 		
-		Uf sigla = ufDao.buscaPorSigla(uf.getSigla());
-		
-		if (sigla != null) {
-			mensagem = "Essa uf já foi cadastrada anteriormente.";
-			return true;
-		}
+//		Uf sigla = ufDao.buscaPorSigla(uf.getSigla());
+//		
+//		if (sigla != null) {
+//			mensagem = "Essa uf já foi cadastrada anteriormente.";
+//			return true;
+//		}
 
 		return false;
 
